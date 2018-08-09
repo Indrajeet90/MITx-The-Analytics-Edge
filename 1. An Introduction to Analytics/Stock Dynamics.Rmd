@@ -1,0 +1,85 @@
+---
+title: "Stock Dynamics"
+output: html_notebook
+---
+
+A stock market is where buyers and sellers trade shares of a company, and is one of the most popular ways for individuals and companies to invest money. The size of the world stock market  is now estimated to be in the trillions. The largest stock market in the world is the New York Stock Exchange (NYSE), located in New York City. About 2,800 companies are listed on the NSYE. In this problem, we'll look at the monthly stock prices of five of these companies: IBM, General Electric (GE), Procter and Gamble, Coca Cola, and Boeing. The data used in this problem comes from Infochimps.
+
+```{r}
+# Reading the data
+IBM = read.csv("IBMStock.csv")
+GE =  read.csv("GEStock.csv")
+ProcterGamble = read.csv("ProcterGambleStock.csv")
+CocaCola = read.csv("CocaColaStock.csv")
+Boeing = read.csv("BoeingStock.csv")
+```
+Each data frame has two variables, described as follows:
+
+Date: the date of the stock price, always given as the first of the month.
+StockPrice: the average stock price of the company in the given month.
+In this problem, we'll take a look at how the stock dynamics of these companies have changed over time.
+```{r}
+# Converting dates into R format
+IBM$Date = as.Date(IBM$Date, "%m/%d/%y")
+GE$Date = as.Date(GE$Date, "%m/%d/%y")
+CocaCola$Date = as.Date(CocaCola$Date, "%m/%d/%y")
+ProcterGamble$Date = as.Date(ProcterGamble$Date, "%m/%d/%y")
+Boeing$Date = as.Date(Boeing$Date, "%m/%d/%y")
+```
+
+```{r}
+# Summary Statistics
+dim(IBM)
+min(IBM$Date,GE$Date,CocaCola$Date,ProcterGamble$Date,Boeing$Date)
+max(IBM$Date,GE$Date,CocaCola$Date,ProcterGamble$Date,Boeing$Date)
+min(GE$StockPrice)
+max(CocaCola$StockPrice)
+median(Boeing$StockPrice)
+sd(ProcterGamble$StockPrice)
+```
+Visualizing Stock Dynamics
+Let's plot the stock prices to see if we can visualize trends in stock prices during this time period. Using the plot function, plot the Date on the x-axis and the StockPrice on the y-axis, for Coca-Cola.
+```{r}
+# Visualizing Stock Dynamics
+plot(CocaCola$Date, CocaCola$StockPrice, type = "l")
+```
+Around 1973 Coca-Cola had its highest stock price in this time period. Also around 1980 Coca-Cola had its lowest stock price in this time period.
+```{r}
+# Adding plot elements for P&G 
+plot(CocaCola$Date, CocaCola$StockPrice, type = "l", col="red") 
+lines(ProcterGamble$Date, ProcterGamble$StockPrice, col= "blue")
+abline(v=as.Date(c("2000-03-01")), lwd=2, lty=2) # adding a vertical line
+```
+n March of 2000, the technology bubble burst, and a stock market crash occurred. P&G stocks dropped more compared to CocaCola.Around 1983, the stock for Procter and Gamble) was going up, while CocaCola was going down.In the time period shown in the plot, CocaCola generally has lower values.
+
+Visualizing Stock Dynamics 1995-2005
+Let's take a look at how the stock prices changed from 1995-2005 for all five companies. 
+```{r}
+# Visualizing Stock Dynamics 1995-2005
+# CocaCola stock prices from 1995 through 2005
+plot(CocaCola$Date[301:432], CocaCola$StockPrice[301:432], type="l", col="red", ylim=c(0,210))
+lines(ProcterGamble$Date[301:432], ProcterGamble$StockPrice[301:432], col= "salmon")
+lines(GE$Date[301:432], GE$StockPrice[301:432], col= "green")
+lines(IBM$Date[301:432], IBM$StockPrice[301:432], col= "black", lty=2)
+lines(Boeing$Date[301:432], Boeing$StockPrice[301:432], col= "magenta")
+abline(v=as.Date(c("2000-03-01")), lwd=2)
+abline(v=as.Date(c("1997-09-01","1997-11-30")), lwd=2, lty=2)
+```
+Observations: 
+The stock for General Electric falls significantly more than the other stocks after the technology bubble burst around March 2001.IBM has the highest value in this period around 1999.In October of 1997, there was a global stock market crash that was caused by an economic crisis in Asia.Boeing and Procter & Gamble had a decreasing trend in stock prices from September 1997 to November 1997.Boeing is steadily increasing from 2004 to the beginning of 2006.
+
+Monthly Trends:
+Let's see if stocks tend to be higher or lower during certain months.
+```{r}
+# mean stock prices
+mean(IBM$StockPrice)
+mean(GE$StockPrice)
+mean(Boeing$StockPrice)
+mean(CocaCola$StockPrice)
+mean(ProcterGamble$StockPrice)
+tapply(IBM$StockPrice, months(IBM$Date), mean)
+tapply(GE$StockPrice, months(GE$Date), mean)
+tapply(Boeing$StockPrice, months(Boeing$Date), mean)
+tapply(CocaCola$StockPrice, months(CocaCola$Date), mean)
+tapply(ProcterGamble$StockPrice, months(ProcterGamble$Date), mean)
+```
