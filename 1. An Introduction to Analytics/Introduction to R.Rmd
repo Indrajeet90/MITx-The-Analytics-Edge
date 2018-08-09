@@ -1,0 +1,132 @@
+---
+title: "Introduction to R"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+# Basic Calculations
+8*6
+2^16
+2^
+8*6
+8*10
+```
+```{r}
+# Functions
+sqrt(2)
+abs(-65)
+?sqrt
+```
+
+```{r}
+# Variables
+SquareRoot2 = sqrt(2)
+SquareRoot2
+HoursYear <- 365*24
+HoursYear
+ls()
+```
+```{r}
+# Vectors
+c(2,3,5,8,13)
+Country = c("Brazil", "China", "India","Switzerland","USA")
+LifeExpectancy = c(74,76,65,83,79)
+Country
+LifeExpectancy
+Country[1]
+LifeExpectancy[3]
+Sequence = seq(0,100,2) # Printing no. 0 to 100 at specified interval
+Sequence
+```
+
+```{r}
+# Data Frames
+CountryData = data.frame(Country, LifeExpectancy) #Create dataframe from two vectors
+CountryData
+# Adding another vector by specifying column name to existing data frame
+CountryData$Population = c(199000,1390000,1240000,7997,318000)
+CountryData
+Country = c("Australia","Greece")
+LifeExpectancy = c(82,81)
+Population = c(23050,11125)
+NewCountryData = data.frame(Country, LifeExpectancy, Population)
+NewCountryData
+```
+```{r}
+# using rbind function to merge two or more dataframes
+AllCountryData = rbind(CountryData, NewCountryData)
+AllCountryData
+```
+```{r}
+WHO = read.csv("WHO.csv")
+str(WHO)
+summary(WHO)
+```
+
+```{r}
+# Subsetting
+WHO_Europe = subset(WHO, Region == "Europe")  # Subsetting a dataset by one of columns
+str(WHO_Europe)
+```
+
+```{r}
+write.csv(WHO_Europe, "WHO_Europe.csv")
+```
+
+```{r}
+rm(WHO_Europe)
+```
+
+```{r}
+# Basic data analysis 
+
+mean(WHO$Under15)
+sd(WHO$Under15)
+summary(WHO$Under15)
+```
+```{r}
+# Which.min returns row number of minimum value of a column
+which.min(WHO$Under15) 
+WHO$Country[86]   # Returns the value of specified row for a given column
+
+which.max(WHO$Under15)
+WHO$Country[124]
+```
+```{r}
+# Scatterplot
+plot(WHO$GNI, WHO$FertilityRate)
+```
+
+```{r}
+# Subsetting
+Outliers = subset(WHO, GNI > 10000 & FertilityRate > 2.5) 
+nrow(Outliers)
+Outliers[c("Country","GNI","FertilityRate")]
+
+```
+
+```{r}
+# Histograms
+hist(WHO$CellularSubscribers)
+```
+
+```{r}
+boxplot(WHO$LifeExpectancy ~ WHO$Region)
+
+boxplot(WHO$LifeExpectancy ~ WHO$Region, xlab = "", ylab = "Life Expectancy", main = "Life Expectancy of Countries by Region")
+
+```
+
+```{r}
+# Summary Tables
+table(WHO$Region)
+
+tapply(WHO$Over60, WHO$Region, mean)
+tapply(WHO$LiteracyRate, WHO$Region, min)
+tapply(WHO$LiteracyRate, WHO$Region, min, na.rm=TRUE) # Removing NA values
+```
+
